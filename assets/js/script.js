@@ -48,11 +48,35 @@ function extractFirstCity() {
         if(searchedCity){
             console.log('Lat:', searchedCity.lat);
             console.log('Lon:', searchedCity.lon);
+            var cityLat = searchedCity.lat;
+            var cityLon = searchedCity.lon;
+            cityWeather(cityLat,cityLon);
+            return cityLat, cityLon;
         }
     }
  }
-// function cityWeather() {
-// }
+ //funtion to find weather of the lat and lon
+function cityWeather(cityLat, cityLon) {
+    var apiUrlWeatherInfo = `http://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
+    fetch(apiUrlWeatherInfo)
+    .then(response => {
+        if (!response.ok) {
+            console.log('Unable to get city weather')
+        } else if (response.ok) {
+            var cityWeather = response.json();
+            console.log('Here is the city weather:', cityWeather);
+            return cityWeather;
+
+}})
+}
+
+//funtion to grab the temp of the chosen city
+
+//funtion to convert temp into f
+
+//fucntion to grab the windspeed of chosen city
+
+//fucntion to grab the humidity of the chosen city
 
 
 
