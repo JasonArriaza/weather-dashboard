@@ -1,84 +1,141 @@
 var apiKey = 'a2000ba3cceed20cb5cc94de29283744';
-var listOfCities = '';
+var listOfCities = [];
 var searchedCity = '';
-//function to grab the input from the search bar
+
+// Function to grab the input from the search bar
 function getSearchInput() {
     var searchInput = document.getElementById('cityInput');
     userInput = searchInput.value;
     console.log('User Input', userInput);
     searchCity(userInput);
 }
-//function to search fot the cities with the given name
+//function to store search history into html
+function saveToSearchHistory(){
+    
+}
+
+//funtion to be able to click on item in search history and run the search again
+
+
+
+// Function to search for the cities with the given name
 function searchCity() {
-    console.log('Search city funciton is receiving the value')
+    console.log('Search city function is receiving the value')
     var apiUrlCityInfo = `http://api.openweathermap.org/geo/1.0/direct?q=${userInput},&limit=5&appid=${apiKey}`;
 
     fetch(apiUrlCityInfo)
-    .then(response => {
-        if (!response.ok) {
-            console.log('Unable to get city data')
-        } else if (response.ok) {
-            var listOfCities = response.json();
+        .then(response => {
+            if (!response.ok) {
+                console.log('Unable to get city data');
+            } else {
+                return response.json();
+            }
+        })
+        .then(cityData => {
+            listOfCities = cityData;
             console.log('Here is the list of cities:', listOfCities);
-            return listOfCities;
+            extractFirstCity();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
 
-        }
-    })
-    .then(cityData => {
-        listOfCities = cityData;
-        console.log('Here is the list of cities:', listOfCities);
-        extractFirstCity();
-    })
-    }
-
-//function to extract the first city in the array
+// Function to extract the first city in the array
 function extractFirstCity() {
     if (listOfCities.length > 0) {
         console.log('First city:', listOfCities[0]);
         var searchedCity = listOfCities[0];
         extractLatLong(searchedCity);
-        return searchedCity;
     } else {
         console.log('No cities found');
     }
 }
- //function to extract the lat and lon in the chosen city
- function extractLatLong(searchedCity){
-    if(searchedCity){
-        if(searchedCity){
-            console.log('Lat:', searchedCity.lat);
-            console.log('Lon:', searchedCity.lon);
-            var cityLat = searchedCity.lat;
-            var cityLon = searchedCity.lon;
-            cityWeather(cityLat,cityLon);
-            return cityLat, cityLon;
-        }
+
+// Function to extract the lat and lon in the chosen city
+function extractLatLong(searchedCity) {
+    if (searchedCity) {
+        console.log('Lat:', searchedCity.lat);
+        console.log('Lon:', searchedCity.lon);
+        var cityLat = searchedCity.lat;
+        var cityLon = searchedCity.lon;
+        cityWeather(cityLat, cityLon);
     }
- }
- //funtion to find weather of the lat and lon
+}
+
+// Function to find weather of the lat and lon
 function cityWeather(cityLat, cityLon) {
     var apiUrlWeatherInfo = `http://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
     fetch(apiUrlWeatherInfo)
-    .then(response => {
-        if (!response.ok) {
-            console.log('Unable to get city weather')
-        } else if (response.ok) {
-            var cityWeather = response.json();
-            console.log('Here is the city weather:', cityWeather);
-            return cityWeather;
-
-}})
+        .then(response => {
+            if (!response.ok) {
+                console.log('Unable to get city weather');
+            } else {
+                return response.json();
+            }
+        })
+        .then(cityCurrentWeather => {
+            console.log('Here is the city weather:', cityCurrentWeather);
+            grabTemp(cityCurrentWeather);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
-//funtion to grab the temp of the chosen city
+// Function to grab the temp of the chosen city
+function grabTemp(cityCurrentWeather) {
+    console.log('City Weather Data:', cityCurrentWeather);
 
-//funtion to convert temp into f
+    var cityNameElement = document.getElementById('cityName');
+    var tempElement = document.getElementById('temp');
+    var humidityElement = document.getElementById('humidity');
+    var windElement = document.getElementById('wind');
 
-//fucntion to grab the windspeed of chosen city
+    if (cityCurrentWeather && cityCurrentWeather.city && cityCurrentWeather.list && cityCurrentWeather.list.length > 0) {
+        var cityName = cityCurrentWeather.city.name;
 
-//fucntion to grab the humidity of the chosen city
+        // Set city name
+        if (cityName) {
+            cityNameElement.innerText = 'City: ' + cityName;
+        } else {
+            cityNameElement.innerText = 'City Name not available';
+        }
+
+        // Assuming you want the data for the first entry in the list
+        var weatherData = cityCurrentWeather.list[0];
+
+        // Temperature
+        var temp = weatherData.main.temp;
+        if (temp !== undefined) {
+            tempElement.innerText = 'Temp: ' + temp + '°C'; // Assuming temperature is in Celsius
+        } else {
+            tempElement.innerText = 'Temperature data not available';
+        }
+
+        // Humidity
+        var humidity = weatherData.main.humidity;
+        if (humidity !== undefined) {
+            humidityElement.innerText = 'Humidity: ' + humidity + '%';
+        } else {
+            humidityElement.innerText = 'Humidity data not available';
+        }
+
+        // Wind Speed
+        var windSpeed = weatherData.wind.speed;
+        if (windSpeed !== undefined) {
+            windElement.innerText = 'Wind Speed: ' + windSpeed + ' m/s'; // Assuming wind speed is in meters per second
+        } else {
+            windElement.innerText = 'Wind Speed data not available';
+        }
+    } else {
+        console.log('Weather data not available');
+    }
+}
 
 
+
+// Function to convert temp into f
 
 var searchButton = document.getElementById('searchButton');
-searchButton.addEventListener('click',getSearchInput);
+searchButton.addEventListener('click', getSearchInput);
