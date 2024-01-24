@@ -9,10 +9,6 @@ function getSearchInput() {
     console.log('User Input', userInput);
     searchCity(userInput);
 }
-//function to store search history into html
-function saveToSearchHistory(){
-    
-}
 
 //funtion to be able to click on item in search history and run the search again
 
@@ -47,6 +43,8 @@ function extractFirstCity() {
         console.log('First city:', listOfCities[0]);
         var searchedCity = listOfCities[0];
         extractLatLong(searchedCity);
+        saveToSearchHistory(searchedCity);
+        return searchedCity;
     } else {
         console.log('No cities found');
     }
@@ -133,6 +131,17 @@ function grabTemp(cityCurrentWeather) {
     }
 }
 
+//function to store search history into html
+function saveToSearchHistory(searchedCity){
+    if(searchedCity){
+          // Create a new <p> element
+    var newCityParagraph = document.createElement('p');
+    
+    newCityParagraph.textContent = userInput;
+
+    searchHistory.appendChild(newCityParagraph);
+    }
+}
 
 
 // Function to convert temp into f
