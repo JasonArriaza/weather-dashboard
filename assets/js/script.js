@@ -10,12 +10,10 @@ function getSearchInput() {
     searchCity(userInput);
 }
 
-//funtion to be able to click on item in search history and run the search again
-
 
 
 // Function to search for the cities with the given name
-function searchCity() {
+function searchCity(userInput) {
     console.log('Search city function is receiving the value')
     var apiUrlCityInfo = `http://api.openweathermap.org/geo/1.0/direct?q=${userInput},&limit=5&appid=${apiKey}`;
 
@@ -132,19 +130,38 @@ function grabTemp(cityCurrentWeather) {
 }
 
 //function to store search history into html
-function saveToSearchHistory(searchedCity){
-    if(searchedCity){
-          // Create a new <p> element
-    var newCityParagraph = document.createElement('p');
-    
-    newCityParagraph.textContent = userInput;
+function saveToSearchHistory(searchedCity) {
+    if (searchedCity) {
+        // Create a new <p> element
+        var newCityParagraph = document.createElement('p');
 
-    searchHistory.appendChild(newCityParagraph);
+        newCityParagraph.textContent = userInput;
+
+        newCityParagraph.classList.add('search-history-item');
+
+        newCityParagraph.addEventListener('click', clickableSearchHistory);
+
+        searchHistory.appendChild(newCityParagraph);
+
     }
 }
 
-
+// Function to add clickable seartch history
+function clickableSearchHistory(event) {
+    let userInput = event.target.textContent;
+    console.log('Clicked text:', userInput);
+    searchCity(userInput);
+}
 // Function to convert temp into f
 
 var searchButton = document.getElementById('searchButton');
 searchButton.addEventListener('click', getSearchInput);
+
+// Event listener for dynamically created elements
+document.addEventListener('click', function (event) {
+    if (event.target.tagName === 'p' && event.target.parentElement.classList.contains('search-history-item')) {
+        event.preventDefault();
+
+        clickableSearchHistory(event);
+    }
+});
