@@ -2,6 +2,32 @@ var apiKey = 'a2000ba3cceed20cb5cc94de29283744';
 var listOfCities = [];
 var searchedCity = '';
 
+
+function getCurrentDate() {
+    var currentDate = new Date();
+    
+    // Months array for formatting
+    var months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Get the components of the date
+    var month = months[currentDate.getMonth()];
+    var day = currentDate.getDate();
+    var year = currentDate.getFullYear();
+
+    // Format the date
+    var formattedDate = `${month} ${day}, ${year}`;
+
+    return formattedDate;
+}
+
+
+var currentDateElement = document.getElementById('currentDateElement');
+currentDateElement.innerText = getCurrentDate();
+
+
 // Function to grab the input from the search bar
 function getSearchInput() {
     var searchInput = document.getElementById('cityInput');
@@ -84,6 +110,7 @@ function grabTemp(cityCurrentWeather) {
     console.log('City Weather Data:', cityCurrentWeather);
 
     var cityNameElement = document.getElementById('cityName');
+
     var tempElement = document.getElementById('temp');
     var humidityElement = document.getElementById('humidity');
     var windElement = document.getElementById('wind');
@@ -91,6 +118,22 @@ function grabTemp(cityCurrentWeather) {
     var tempElementOne = document.getElementById('temp1');
     var humidityElementOne = document.getElementById('humidity1');
     var windElementOne = document.getElementById('wind1');
+
+    var tempElementTwo = document.getElementById('temp2');
+    var humidityElementTwo = document.getElementById('humidity2');
+    var windElementTwo = document.getElementById('wind2');
+
+    var tempElementThree = document.getElementById('temp3');
+    var humidityElementThree = document.getElementById('humidity3');
+    var windElementThree = document.getElementById('wind3');
+
+    var tempElementFour = document.getElementById('temp4');
+    var humidityElementFour = document.getElementById('humidity4');
+    var windElementFour = document.getElementById('wind4');
+
+    var tempElementFive = document.getElementById('temp5');
+    var humidityElementFive = document.getElementById('humidity5');
+    var windElementFive = document.getElementById('wind5');
 
     if (cityCurrentWeather && cityCurrentWeather.city && cityCurrentWeather.list && cityCurrentWeather.list.length > 0) {
         var cityName = cityCurrentWeather.city.name;
@@ -118,9 +161,18 @@ function grabTemp(cityCurrentWeather) {
         // Temperature
         var temp = weatherData.main.temp;
         var temp1 = weatherDataOne.main.temp;
+        var temp2 = weatherDataTwo.main.temp;
+        var temp3 = weatherDataThree.main.temp;
+        var temp4 = weatherDataFour.main.temp;
+        var temp5 = weatherDataFive.main.temp;
+
         if (temp !== undefined) {
             tempElement.innerText = 'Temp: ' + temp + '°F';
             tempElementOne.innerText = 'Temp: ' + temp1 + '°F';
+            tempElementTwo.innerText = 'Temp: ' + temp2 + '°F';
+            tempElementThree.innerText = 'Temp: ' + temp3 + '°F';
+            tempElementFour.innerText = 'Temp: ' + temp4 + '°F';
+            tempElementFive.innerText = 'Temp: ' + temp5 + '°F';
         } else {
             tempElement.innerText = 'Temperature data not available';
         }
@@ -134,10 +186,19 @@ function grabTemp(cityCurrentWeather) {
         // Humidity
         var humidity = weatherData.main.humidity;
         var humidity1 = weatherDataOne.main.humidity;
+        var humidity2 = weatherDataTwo.main.humidity;
+        var humidity3 = weatherDataThree.main.humidity;
+        var humidity4 = weatherDataFour.main.humidity;
+        var humidity5 = weatherDataFive.main.humidity;
+
         if (humidity !== undefined) {
             humidityElement.innerText = 'Humidity: ' + humidity + '%';
 
             humidityElementOne.innerText = 'Humidity: ' + humidity1 + '%';
+            humidityElementTwo.innerText = 'Humidity: ' + humidity2 + '%';
+            humidityElementThree.innerText = 'Humidity: ' + humidity3 + '%';
+            humidityElementFour.innerText = 'Humidity: ' + humidity4 + '%';
+            humidityElementFive.innerText = 'Humidity: ' + humidity5 + '%';
 
         } else {
             humidityElement.innerText = 'Humidity data not available';
@@ -151,9 +212,17 @@ function grabTemp(cityCurrentWeather) {
         // Wind Speed
         var windSpeed = weatherData.wind.speed;
         var windSpeedOne = weatherDataOne.wind.speed;
+        var windSpeedTwo = weatherDataTwo.wind.speed;
+        var windSpeedThree = weatherDataThree.wind.speed;
+        var windSpeedFour = weatherDataFour.wind.speed;
+        var windSpeedFive = weatherDataFive.wind.speed;
         if (windSpeed !== undefined) {
-            windElement.innerText = 'Wind Speed: ' + windSpeed + ' m/s'; // Assuming wind speed is in meters per second
+            windElement.innerText = 'Wind Speed: ' + windSpeed + ' m/s';
             windElementOne.innerText = 'Wind Speed: ' + windSpeedOne + ' m/s';
+            windElementTwo.innerText = 'Wind Speed: ' + windSpeedTwo + ' m/s';
+            windElementThree.innerText = 'Wind Speed: ' + windSpeedThree + ' m/s';
+            windElementFour.innerText = 'Wind Speed: ' + windSpeedFour + ' m/s';
+            windElementFive.innerText = 'Wind Speed: ' + windSpeedFive + ' m/s';
 
         } else {
             windElement.innerText = 'Wind Speed data not available';
