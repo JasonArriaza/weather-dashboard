@@ -61,7 +61,7 @@ function extractLatLong(searchedCity) {
 
 // Function to find weather of the lat and lon
 function cityWeather(cityLat, cityLon) {
-    var apiUrlWeatherInfo = `http://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}`;
+    var apiUrlWeatherInfo = `http://api.openweathermap.org/data/2.5/forecast?lat=${cityLat}&lon=${cityLon}&cnt=200&appid=${apiKey}&units=imperial`;
     fetch(apiUrlWeatherInfo)
         .then(response => {
             if (!response.ok) {
@@ -88,6 +88,10 @@ function grabTemp(cityCurrentWeather) {
     var humidityElement = document.getElementById('humidity');
     var windElement = document.getElementById('wind');
 
+    var tempElementOne = document.getElementById('temp1');
+    var humidityElementOne = document.getElementById('humidity1');
+    var windElementOne = document.getElementById('wind1');
+
     if (cityCurrentWeather && cityCurrentWeather.city && cityCurrentWeather.list && cityCurrentWeather.list.length > 0) {
         var cityName = cityCurrentWeather.city.name;
 
@@ -100,27 +104,57 @@ function grabTemp(cityCurrentWeather) {
 
         // Assuming you want the data for the first entry in the list
         var weatherData = cityCurrentWeather.list[0];
+        var weatherDataOne = cityCurrentWeather.list[8];
+        var weatherDataTwo = cityCurrentWeather.list[16];
+        var weatherDataThree = cityCurrentWeather.list[24];
+        var weatherDataFour = cityCurrentWeather.list[32];
+        var weatherDataFive = cityCurrentWeather.list[39];
+
+
+
+
+
 
         // Temperature
         var temp = weatherData.main.temp;
+        var temp1 = weatherDataOne.main.temp;
         if (temp !== undefined) {
-            tempElement.innerText = 'Temp: ' + temp + '°C'; // Assuming temperature is in Celsius
+            tempElement.innerText = 'Temp: ' + temp + '°F';
+            tempElementOne.innerText = 'Temp: ' + temp1 + '°F';
         } else {
             tempElement.innerText = 'Temperature data not available';
         }
 
+
+
+
+
+
+
         // Humidity
         var humidity = weatherData.main.humidity;
+        var humidity1 = weatherDataOne.main.humidity;
         if (humidity !== undefined) {
             humidityElement.innerText = 'Humidity: ' + humidity + '%';
+
+            humidityElementOne.innerText = 'Humidity: ' + humidity1 + '%';
+
         } else {
             humidityElement.innerText = 'Humidity data not available';
         }
 
+
+
+
+
+
         // Wind Speed
         var windSpeed = weatherData.wind.speed;
+        var windSpeedOne = weatherDataOne.wind.speed;
         if (windSpeed !== undefined) {
             windElement.innerText = 'Wind Speed: ' + windSpeed + ' m/s'; // Assuming wind speed is in meters per second
+            windElementOne.innerText = 'Wind Speed: ' + windSpeedOne + ' m/s';
+
         } else {
             windElement.innerText = 'Wind Speed data not available';
         }
@@ -152,8 +186,6 @@ function clickableSearchHistory(event) {
     console.log('Clicked text:', userInput);
     searchCity(userInput);
 }
-// Function to convert temp into f
-
 var searchButton = document.getElementById('searchButton');
 searchButton.addEventListener('click', getSearchInput);
 
