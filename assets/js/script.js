@@ -6,18 +6,15 @@ var searchedCity = '';
 function getCurrentDate() {
     var currentDate = new Date();
     
-    // Months array for formatting
     var months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
-    // Get the components of the date
     var month = months[currentDate.getMonth()];
     var day = currentDate.getDate();
     var year = currentDate.getFullYear();
 
-    // Format the date
     var formattedDate = `${month} ${day}, ${year}`;
 
     return formattedDate;
@@ -145,7 +142,6 @@ function grabTemp(cityCurrentWeather) {
             cityNameElement.innerText = 'City Name not available';
         }
 
-        // Assuming you want the data for the first entry in the list
         var weatherData = cityCurrentWeather.list[0];
         var weatherDataOne = cityCurrentWeather.list[8];
         var weatherDataTwo = cityCurrentWeather.list[16];
